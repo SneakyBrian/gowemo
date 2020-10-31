@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -105,7 +106,7 @@ func parseResponse(action string, data []byte, response interface{}) error {
 	for {
 		// Read tokens from the XML document in a stream.
 		t, err := decoder.Token()
-		if err != nil {
+		if err != nil && err != io.EOF {
 			return fmt.Errorf("Token: %v", err)
 		}
 		if t == nil {
